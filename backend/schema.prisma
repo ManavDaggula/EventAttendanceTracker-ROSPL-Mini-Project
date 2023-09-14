@@ -1,0 +1,31 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Events {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  startTime DateTime
+  endTime   DateTime?
+  Record    Record[]
+}
+
+model Record {
+  id         String   @id @default(uuid())
+  name       String
+  event      Events   @relation(fields: [eventsId], references: [id])
+  roll       Int
+  department String
+  year       String
+  div        String
+  code       String
+  logTime    DateTime @default(now())
+  eventsId   Int
+
+  @@unique([name, roll, department, year, div, eventsId])
+}
