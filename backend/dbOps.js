@@ -92,9 +92,7 @@ async function listRegisteredAttendee(eventName, verified=false){
     registeredAttendees = await prisma.record.findMany({
       where:{
         event:event,
-        code:{
-          not:null
-        }
+        code:null,
       }
     })
   }

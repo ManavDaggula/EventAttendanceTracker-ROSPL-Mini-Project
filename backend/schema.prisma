@@ -23,7 +23,7 @@ model Record {
   department String
   year       String
   div        String
-  code       String
+  code       String?
   logTime    DateTime @default(now())
   eventsId   Int
 
