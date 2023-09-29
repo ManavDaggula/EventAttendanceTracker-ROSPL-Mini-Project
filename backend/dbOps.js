@@ -6,12 +6,12 @@ async function listEvents() {
   return await prisma.events.findMany();
 }
 
-async function listRunningEvents(){
+async function listRunningEvents() {
   return await prisma.events.findMany({
-    where:{
-      endTime:null
-    }
-  })
+    where: {
+      endTime: null,
+    },
+  });
 }
 
 async function addEvents(name, time) {
@@ -77,34 +77,45 @@ async function generateCode(eventName, len = 4) {
       s += sample[Math.floor(Math.random() * sample.length)];
     }
   }
-//   CAUTION: basically here a forever loop can be formed say if all codes are exhausted and no new code is randomly generated, so you can try to implement a limit of tries for generation
-  return s
+  //   CAUTION: basically here a forever loop can be formed say if all codes are exhausted and no new code is randomly generated, so you can try to implement a limit of tries for generation
+  return s;
 }
 
-async function listRegisteredAttendee(eventName, verified=false){
+async function listRegisteredAttendee(eventName, verified = false) {
   let event = await prisma.events.findUnique({
-    where:{
-      name:eventName
-    }
-  })
-  let registeredAttendees
-  if(verified){
+    where: {
+      name: eventName,
+    },
+  });
+  let registeredAttendees;
+  if (verified) {
     registeredAttendees = await prisma.record.findMany({
-      where:{
-        event:event,
-        code:null,
-      }
-    })
-  }
-  else{
+      where: {
+        event: event,
+        code: null,
+      },
+    });
+  } else {
     registeredAttendees = await prisma.record.findMany({
-      where:{
-        event:event
-      }
-    })
+      where: {
+        event: event,
+      },
+    });
   }
   // console.log(event.Record)
-  return registeredAttendees
+  return registeredAttendees;
+}
+
+async function adminExists(username) {
+  let user = await prisma.admins.findUnique({
+    where: {
+      username: username,
+    },
+  });
+  if(user.length==0){
+    throw new Error("User does not exist.");
+  }
+  return user.password;
 }
 
 export {
@@ -115,5 +126,6 @@ export {
   endEvent,
   deleteEvent,
   generateCode,
-  listRegisteredAttendee
+  listRegisteredAttendee,
+  adminExists
 };
