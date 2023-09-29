@@ -29,3 +29,9 @@ model Record {
 
   @@unique([name, roll, department, year, div, eventsId])
 }
+
+model Admins {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+}
