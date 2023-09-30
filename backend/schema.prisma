@@ -19,7 +19,7 @@ model Record {
   id         String   @id @default(uuid())
   name       String
   event      Events   @relation(fields: [eventsId], references: [id])
-  roll       Int
+  roll       String
   department String
   year       String
   div        String

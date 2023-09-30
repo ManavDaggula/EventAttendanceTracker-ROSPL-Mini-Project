@@ -30,19 +30,63 @@ bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10, (err, hashed) => {
 
 await prisma.events.create({
   data: {
+    id: 1,
     name: "Robotics Competition",
-    startTime: new Date(),
+    startTime: new Date("09/01/2023 11:00 +05:30"),
+    endTime: new Date("09/01/2023 12:00 +05:30"),
   },
 });
 await prisma.events.create({
   data: {
+    id: 2,
     name: "Space Exploration Seminar",
-    startTime: new Date(),
+    startTime: new Date("09/02/2023 11:00 +05:30"),
+    endTime: new Date("09/02/2023 12:00 +05:30"),
   },
 });
 await prisma.events.create({
   data: {
+    id: 3,
     name: "Blockchain and Cryptocurrency Workshop",
     startTime: new Date(),
   },
 });
+
+const records = [
+  {
+    id: "621aec04-c7f3-49f4-a225-b58c5565a15c",
+    name: "John Doe",
+    department: "I.T.",
+    div: "A",
+    roll: "303",
+    year: "S.E.",
+    eventsId: 1,
+    logTime: new Date("09/01/2023 11:30 +05:30"),
+  },
+  {
+    id: "9912249c-6045-4101-8e58-456097482465",
+    name: "Lucy Brown",
+    department: "I.T.",
+    div: "A",
+    roll: "503",
+    year: "T.E.",
+    eventsId: 2,
+    logTime: new Date("09/01/2023 11:30 +05:30"),
+  },
+  {
+    id: "4e315699-2505-4287-8712-924a01c3c7c4",
+    name: "Clark Kent",
+    department: "I.T.",
+    div: "A",
+    roll: "309",
+    year: "S.E.",
+    eventsId: 1,
+    logTime: new Date("09/01/2023 11:30 +05:30"),
+  },
+]
+
+records.forEach(async (r)=>{
+  await prisma.record.create({
+    data:r
+  })
+})

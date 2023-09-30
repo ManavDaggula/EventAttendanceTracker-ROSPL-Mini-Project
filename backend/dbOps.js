@@ -68,7 +68,7 @@ async function generateCode(eventName, len = 4) {
     },
   });
   let codeList = recordList.Record.map((x) => x.code);
-  console.log(codeList);
+  // console.log(codeList);
   let sample = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let s = "";
   while (s.length == 0 || codeList.includes(s)) {
@@ -81,12 +81,13 @@ async function generateCode(eventName, len = 4) {
   return s;
 }
 
-async function listRegisteredAttendee(eventName, verified = false) {
+async function listRegisteredAttendee(eventName, verified = true) {
   let event = await prisma.events.findUnique({
     where: {
       name: eventName,
     },
   });
+  if(!event){throw new Error("Event name invalid.")}
   let registeredAttendees;
   if (verified) {
     registeredAttendees = await prisma.record.findMany({
@@ -94,12 +95,25 @@ async function listRegisteredAttendee(eventName, verified = false) {
         event: event,
         code: null,
       },
+      select: {
+        name: true,
+        div: true,
+        year: true,
+        department: true,
+        logTime: true,
+        roll: true,
+        code: true,
+      }
     });
   } else {
     registeredAttendees = await prisma.record.findMany({
       where: {
         event: event,
       },
+      select:{
+        id: false,
+        name: true,
+      }
     });
   }
   // console.log(event.Record)
@@ -118,6 +132,79 @@ async function adminExists(username) {
   return user.password;
 }
 
+async function newAttendee(name, roll, department, year, div, eventName){
+  if(name && roll && department && year && div && eventName){
+    const event = await prisma.events.findUnique({
+      where:{
+        name: eventName,
+        endTime: null
+      }
+    })
+    if(!event){throw new Error("No such running event found.")}
+    else{
+      try{
+        const newCode = await generateCode(eventName);
+        const record = await prisma.record.create({
+          data:{
+            eventsId: event.id,
+            name: name,
+            year: year,
+            div: div,
+            roll: roll,
+            department: department,
+            logTime: new Date(),
+            code: newCode,
+          }
+        })
+        return record;
+      }
+      catch(err){throw new Error("Already registered.")}
+    }
+  }
+  else{
+    throw new Error("Missing details to register for attendance.");
+  }
+}
+
+async function getAttendee(eventName, code){
+  if(!eventName || !code){
+    throw new Error("Incomplete request.");
+  }
+  const record = await prisma.record.findFirst({
+    where:{
+      code: code,
+      event:{
+        name: eventName
+      }
+    }
+  })
+  if(!record) {
+    throw new Error("No such record.");
+  }
+  return record;
+}
+
+async function verifyAttendee(eventName, code){
+  if(!eventName || !code){
+    throw new Error("Incomplete request.");
+  }
+  const record = await prisma.record.updateMany({
+    where:{
+      code: code,
+      event:{
+        name: eventName
+      }
+    },
+    data: {
+      code: null,
+      logTime: new Date()
+    }
+  })
+  if(record.count == 0) {
+    throw new Error("No such record.");
+  }
+}
+
 export {
   listEvents,
   listRunningEvents,
@@ -127,5 +214,8 @@ export {
   deleteEvent,
   generateCode,
   listRegisteredAttendee,
-  adminExists
+  adminExists,
+  newAttendee,
+  getAttendee,
+  verifyAttendee
 };

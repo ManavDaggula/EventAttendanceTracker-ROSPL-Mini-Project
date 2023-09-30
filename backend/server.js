@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
-import { adminExists, listEvents, listRunningEvents } from "./dbOps.js";
+import { addEvents, adminExists, endEvent, getAttendee, listEvents, listRegisteredAttendee, listRunningEvents, newAttendee, startEvent, verifyAttendee } from "./dbOps.js";
 
 dotenv.config();
 const app = e();
@@ -18,7 +18,7 @@ app.use(cookieParser());
 function verifyRequest(req, res, next) {
   const token = req.cookies.token;
   if (token) {
-    console.log(token);
+    // console.log(token);
     jwt.verify(token,process.env.JWT_SECRET,(err,result)=>{
         if(err){
             res.status(401).send("Unauthorised");
@@ -71,7 +71,96 @@ app.get("/listRunningEvents", (req,res)=>{
     })
 })
 
+app.get("/startEvent",verifyRequest, (req,res)=>{
+  const eventName = req.query.event;
+  if(!eventName){res.status(400).send("Event must be specified.")}
+  startEvent(eventName)
+  .then(data=>res.sendStatus(200))
+  .catch(err=>res.status(500).send(err))
+})
 
+app.get("/stopEvent",verifyRequest, (req,res)=>{
+  const eventName = req.query.event;
+  if(!eventName){res.status(400).send("Event must be specified.")}
+  endEvent(eventName)
+  .then(data=>res.sendStatus(200))
+  .catch(err=>res.status(500).send(err))
+})
+
+app.post("/addEvent", verifyRequest, (req,res)=>{
+  const eventName = req.body.eventName;
+  const eventTime = req.body.eventTime;
+  if(eventName && eventTime){
+    addEvents(eventName, eventTime)
+    .then(event =>{res.sendStatus(200)})
+    .catch(err => res.status(500).send(err.message))
+  }
+  else{
+    res.status(400).send("Invalid event addition request.")
+  }
+})
+
+app.get("/listAttendees/:event",verifyRequest, (req,res)=>{
+  const event = req.params.event;
+  if(!event){
+    res.status(400).send("Invalid request. Specify event.");
+  }
+  listRegisteredAttendee(event)
+  .then(data=>res.status(200).json(data))
+  .catch(err=>res.status(500).send(err.message))
+})
+
+app.post("/newAttendee", (req,res)=>{
+  const name = req.body.name;
+  const event = req.body.event;
+  const roll = req.body.roll;
+  const year = req.body.year;
+  const department = req.body.name;
+  const div = req.body.div;
+  if(name && event && roll && year && department && div){
+    newAttendee(name, roll, department, year, div, event)
+    .then((record)=>{
+      res.status(200).send(record);
+    })
+  }
+  else{
+    res.status(400).send("Details missing...");
+  }
+})
+
+app.get("/getAttendee", verifyRequest, (req, res)=>{
+  const eventName = req.query.eventName;
+  const code = req.query.code;
+  if(eventName && code){
+    getAttendee(eventName, code)
+    .then(data =>{
+      res.status(200).json(data);
+    })
+    .catch(err=>{
+      res.status(500).send(err.message);
+    })
+  }
+  else{
+    res.status(400).send("Incomplete data.")
+  }
+})
+
+app.post("/verifyAttendee", verifyRequest, (req,res)=>{
+  const eventName = req.body.eventName;
+  const code = req.body.code;
+  if(eventName && code){
+    verifyAttendee(eventName, code)
+    .then(data =>{
+      res.sendStatus(200);
+    })
+    .catch(err=>{
+      res.status(500).send(err.message);
+    })
+  }
+  else{
+    res.status(400).send("Incomplete data.")
+  }
+})
 
 app.listen(8000, () => {
   console.log("listening....");
