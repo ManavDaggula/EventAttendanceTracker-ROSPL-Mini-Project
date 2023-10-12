@@ -76,12 +76,12 @@ const records = [
   {
     id: "4e315699-2505-4287-8712-924a01c3c7c4",
     name: "Clark Kent",
-    department: "I.T.",
+    department: "C.S.",
     div: "A",
-    roll: "309",
+    roll: "007",
     year: "S.E.",
     eventsId: 1,
-    logTime: new Date("09/01/2023 11:30 +05:30"),
+    logTime: new Date("10/12/2023 11:30 +05:30"),
   },
 ]
 
