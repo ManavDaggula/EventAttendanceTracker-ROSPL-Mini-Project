@@ -1,0 +1,97 @@
+.main-page{
+    background: url("./../../../assets/background-img.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+}
+
+.home-info{
+    background-color: rgba(255, 255, 255, 0.7);
+    height: 25rem;
+    width: 60%;
+    position: absolute;
+    top: 8rem;
+    border: 0.1rem solid #3276B5;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-info h1{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    position: absolute;
+    top: 2rem;
+    color: rgb(42, 40, 40);
+}
+
+.home-info p{
+    position: absolute;
+    top: 8rem;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.3rem;
+    width: 80%;
+    text-align: center;
+    line-height: 3rem;
+    font-weight: 550;
+    color: #3f3f3f;
+}
+
+.btns{
+    display: flex;
+    gap: 8rem;
+}
+
+.btn-section{
+    position: absolute;
+    top: 33rem;
+    text-align: center;
+}
+
+h3{
+    font-size: 1.5rem;
+}
+
+.button {
+    cursor: pointer;
+    position: relative;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    color: rgb(36, 36, 36);
+    border: 2px solid #216cb2;
+    border-radius: 2rem;
+    background-color: #3276B5;
+    font-weight: 550;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+  }
+  
+  .button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color:#9db4c9;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  }
+  
+  .button:hover::before {
+    scale: 3;
+  }
+  
+  .button:hover {
+    color: #212121;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+  }
+  
+  .button:active {
+    scale: 1;
+  }
