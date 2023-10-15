@@ -1,0 +1,37 @@
+body{
+    background-color: #F8F0E5;
+}
+.verify-attendee{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+    gap: 3rem;
+}
+
+.verify-attendee h3{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: rgb(42, 40, 40);
+    font-size: 2rem;
+}
+
+.verify-attendee input{
+    background-color: rgb(red, green, blue);
+    text-align: center;
+    transform-origin: center;
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 2em;
+    width: 10rem;
+    line-height: 2rem;
+    padding: 1rem 1rem;
+}
+
+.verify-attendee .button{
+    font-size: 1.3rem;
+    width: 20%;
+    text-align: center;
+    text-decoration: none;
+}
+

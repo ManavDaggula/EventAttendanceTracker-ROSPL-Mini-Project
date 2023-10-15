@@ -1,0 +1,26 @@
+.snow-container {
+    background-color: transparent;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.snow-container > .snow {
+    background-color: var(--background-faded);
+    display: inline-block;
+    position: absolute;
+    /* left: 50%; */
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    z-index: -1;
+    animation: rotation 3s linear infinite;
+    filter: blur(2px);
+}
+
+@keyframes rotation {
+    from{transform: rotate(0deg)}
+    to{transform: rotate(360deg);}
+}
