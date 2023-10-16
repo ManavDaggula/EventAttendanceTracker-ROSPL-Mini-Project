@@ -1,6 +1,8 @@
 import "./user_css/homepage.css"
 import Navbar from "./Navbar"
+import { useNavigate } from "react-router-dom"
 export default function HomePage(){
+    const navigate = useNavigate();
     return(
         <>
             
@@ -12,9 +14,9 @@ export default function HomePage(){
             <div className="btn-section">
                 <h3>LOG IN</h3>
                 <div className="btns">
-                <button className="button">As a Student</button>
+                <button className="button" onClick={()=>navigate("/student-form")}>As a Student</button>
                 <button className="button">As an Admin</button>
-                </div>
+            </div>
             </div>
         </div>
         </>

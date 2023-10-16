@@ -1,7 +1,7 @@
 import "./user_css/studentform.css"
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 export default function StudentForm(props){
@@ -13,24 +13,35 @@ export default function StudentForm(props){
         const [roll,setRoll] = useState('')
         const [div,setDiv] = useState('A')
         const [year,setYear] = useState('F.E.')
+        const navigate = useNavigate();
       
-        async function getEventList(){
-          let data = await fetch("http://localhost:8000/getEvents")
-          data = await data.json()
-          return data;
-        }
+        // async function getEventList(){
+        //   let data = await fetch("http://localhost:8000/listRunningEvents")
+        //   data = await data.json()
+        //   return data;
+        // }
       
       
         useEffect(()=>{
-          fetch("http://localhost:8000/getEvents")
-          .then(data=>data.json())
-          .then(data=>{setEventList(data);console.log(event_list);setEvent(event_list[0])})
+          axios.get("http://localhost:8000/listRunningEvents")
+          .then(data=>{
+            console.log(data.data)
+            setEventList(data.data)
+          })
+          .catch(e=>console.error(e.message))
           
           console.log("rendered")
         },[])
       
         function registerAttendee(){
-          let form = document.getElementById("attendeeRegistration")
+          // let form = document.getElementById("attendeeRegistration")
+          if(name=="" || event=="" || department=="" || roll=="" || year=="" || div=="") {
+            window.alert("Fill all fields")
+            return false;}
+          if(!new RegExp("[0-9][0-9][0-9]").test(roll)){
+            window.alert("Roll can only have digits");
+            return;
+          }
           
           let formData = {
             name:name,
@@ -40,13 +51,15 @@ export default function StudentForm(props){
             div:div,
             year:year
           }
-          console.log(formData)
+          // console.log(formData)
           axios.post("http://localhost:8000/newAttendee",formData)
           .then((code)=>{
-            console.log(code)
-            code = code.data
-            props.shareDetails(formData)
-            props.showCode(code)
+            console.log(code.data)
+            // code = code.data
+            props.shareDetails(code.data)
+            props.showCode(code.data.code);
+            navigate("/code");
+
           })
           .catch((err)=>{
             console.log(err)
@@ -67,8 +80,8 @@ export default function StudentForm(props){
           <option value="I.T.">Information Technology.</option>
           <option value="C.S.">Computer Science</option>
           <option value="Mech.">Mechanical Engineering</option>
-          <option value="Mech.">Instrumentation</option>
-          <option value="Mech.">AIDS</option>
+          <option value="Instrumentation">Instrumentation</option>
+          <option value="AIDS">AIDS</option>
         </select>
         <label htmlFor="year">Year</label>
         <select name="year" onChange={(e)=>{setYear(e.target.value)}}>
@@ -85,12 +98,12 @@ export default function StudentForm(props){
           <option value="D">D</option>
         </select>
         <label htmlFor="roll">Roll</label>
-        <input type="text" name='roll' onChange={(e)=>{setRoll(e.target.value)}}/>
+        <input type="text" name='roll' onChange={(e)=>{setRoll(e.target.value)}} maxLength={3} minLength={3}/>
         <label htmlFor="event">Event</label>
-        <select name="event" id="" onChange={(e)=>{setEvent(e.target.value)}}>
-          <option value='none' selected disabled hidden>Select an Event</option>
+        <select name="event" id="" onChange={(e)=>{setEvent(e.target.value)}} defaultValue={"none"}>
+          <option value='none' disabled hidden>Select an Event</option>
           {event_list.map((event,index)=>{
-            return <option key={index} value={event}>{event}</option>
+            return <option key={index} value={event.name}>{event.name}</option>
           })}
         </select>
         </form>

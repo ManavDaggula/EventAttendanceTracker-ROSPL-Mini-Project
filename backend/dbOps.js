@@ -205,6 +205,26 @@ async function verifyAttendee(eventName, code){
   }
 }
 
+async function checkAttendeeStatus(eventName, attendeeName, roll, div, year, department){
+  let status = await prisma.record.findFirst({
+    where:{
+      event: await prisma.events.findUnique({where:{name:eventName}}),
+      name: attendeeName,
+      roll: roll,
+      div: div,
+      year: year,
+      department: department,
+      logTime: {
+        gte: new Date(new Date() - (3600*1000))
+      }
+    }
+  })
+  if(!status){
+    throw new Error("No such record.")
+  }
+  return !status.code;
+}
+
 export {
   listEvents,
   listRunningEvents,
@@ -217,5 +237,6 @@ export {
   adminExists,
   newAttendee,
   getAttendee,
-  verifyAttendee
+  verifyAttendee,
+  checkAttendeeStatus
 };

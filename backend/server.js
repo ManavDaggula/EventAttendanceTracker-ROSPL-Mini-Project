@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
-import { addEvents, adminExists, endEvent, getAttendee, listEvents, listRegisteredAttendee, listRunningEvents, newAttendee, startEvent, verifyAttendee } from "./dbOps.js";
+import { addEvents, adminExists, checkAttendeeStatus, endEvent, getAttendee, listEvents, listRegisteredAttendee, listRunningEvents, newAttendee, startEvent, verifyAttendee } from "./dbOps.js";
 
 dotenv.config();
 const app = e();
@@ -159,6 +159,24 @@ app.post("/verifyAttendee", verifyRequest, (req,res)=>{
   }
   else{
     res.status(400).send("Incomplete data.")
+  }
+})
+
+app.get("/checkStatus",(req,res)=>{
+  const eventName = req.query.eventName;
+  // const code = req.query.code;
+  const attendeeName = req.query.attendeeName;
+  const department = req.query.department;
+  const div = req.query.div;
+  const year = req.query.year;
+  const roll = req.query.roll;
+  if(!(eventName && attendeeName && department && div && year && roll)){
+    res.sendStatus(400)
+  }
+  else{
+    checkAttendeeStatus(eventName, attendeeName, roll, div, year, department)
+    .then(d => res.status(200).send(d))
+    .catch(err=>res.status(500).send(err.message))
   }
 })
 
