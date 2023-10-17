@@ -15,7 +15,7 @@ export default function HomePage(){
                 <h3>LOG IN</h3>
                 <div className="btns">
                 <button className="button" onClick={()=>navigate("/student-form")}>As a Student</button>
-                <button className="button">As an Admin</button>
+                <button className="button" onClick={()=>navigate("/admin")}>As an Admin</button>
             </div>
             </div>
         </div>

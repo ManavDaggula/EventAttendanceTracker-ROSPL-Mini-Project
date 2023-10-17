@@ -10,6 +10,7 @@ import Verify from './components/admin/Verify'
 import AttendeeDetails from './components/admin/AttendeeDetails'
 import Events from './components/admin/Events'
 import SuccessPage from './components/user/Successful'
+import AdminLogin from "./components/admin/AdminLogin"
 function App() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [attendeeDetails, setAttendeeDetails] = useState(null);
@@ -23,13 +24,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/student-form" element={!isAdmin && attendeeCode==="" ? <StudentForm shareDetails={(d)=>setAttendeeDetails(d)} showCode={(d)=>setAttendeeCode(d)}/> : <Navigate to={"/"}/> }/>
-        <Route path="/code" element={!isAdmin && attendeeCode!==""? <CodeGeneration code={attendeeCode} attendee={attendeeDetails}/> : <Navigate to={"/"}/> } />
+        <Route path="/code" element={!isAdmin && attendeeCode!==""? <CodeGeneration code={attendeeCode} attendee={attendeeDetails} setSuccess={()=>setIsSuccess(true)}/> : <Navigate to={"/"}/> } />
         <Route path="/successful" element={!isAdmin && isSuccess ? <SuccessPage /> : <Navigate to={"/"}/> } />
         <Route path="/admin" element={isAdmin ? <AdminOptions /> : <Navigate to={"/"}/> } />
         <Route path="/view" element={isAdmin ? <View /> : <Navigate to={"/"}/> } />
-        <Route path="/verify" element={isAdmin ? <Verify /> : <Navigate to={"/"}/> } />
-        <Route path="/attendee-details" element={isAdmin ? <AttendeeDetails /> : <Navigate to={"/"}/> } />
-        <Route path="/events" element={isAdmin ? <Events /> : <Navigate to={"/"}/> } />
+        <Route path="/verify" element={isAdmin ? <Verify setAttendee={d=>{setAttendeeDetails(d)}}/> : <Navigate to={"/"}/> } />
+        <Route path="/attendee-details" element={isAdmin ? <AttendeeDetails attendee={attendeeDetails}/> : <Navigate to={"/"}/> } />
+        {/* <Route path="/events" element={isAdmin ? <Events /> : <Navigate to={"/"}/> } /> */}
+        <Route path="/login" element={<AdminLogin setAdmin={()=>setIsAdmin(true)}/>} />
         {/* <Route path="/admin" element={<AdminOptions/>} /> */}
         {/* <Route path="/view" element={<View/>} /> */}
         {/* <Route path="/verify" element={<Verify/>} /> */}

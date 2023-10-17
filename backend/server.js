@@ -12,7 +12,7 @@ const app = e();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // app.use(e.json())
-app.use(cors());
+app.use(cors({credentials:true, origin:["http://localhost:5173","http://localhost:4173"]}));
 app.use(cookieParser());
 
 function verifyRequest(req, res, next) {
@@ -60,9 +60,11 @@ app.get("/logout", (req, res)=>{
 })
 
 app.get("/listEvents", verifyRequest, (req, res) => {
-  listEvents().then((data) => {
-    res.json(data);
-  });
+  // console.log("here")
+  listEvents().then(data=>{
+    console.log(data);
+    res.status(200).send(data);
+  })
 });
 
 app.get("/listRunningEvents", (req,res)=>{
@@ -100,8 +102,8 @@ app.post("/addEvent", verifyRequest, (req,res)=>{
   }
 })
 
-app.get("/listAttendees/:event",verifyRequest, (req,res)=>{
-  const event = req.params.event;
+app.get("/listAttendees",verifyRequest, (req,res)=>{
+  const event = req.query.event;
   if(!event){
     res.status(400).send("Invalid request. Specify event.");
   }
@@ -137,7 +139,7 @@ app.get("/getAttendee", verifyRequest, (req, res)=>{
       res.status(200).json(data);
     })
     .catch(err=>{
-      res.status(500).send(err.message);
+      res.status(500).send("No such record.");
     })
   }
   else{
@@ -163,18 +165,18 @@ app.post("/verifyAttendee", verifyRequest, (req,res)=>{
 })
 
 app.get("/checkStatus",(req,res)=>{
-  const eventName = req.query.eventName;
+  const eventId = req.query.eventId;
   // const code = req.query.code;
   const attendeeName = req.query.attendeeName;
   const department = req.query.department;
   const div = req.query.div;
   const year = req.query.year;
   const roll = req.query.roll;
-  if(!(eventName && attendeeName && department && div && year && roll)){
+  if(!(eventId && attendeeName && department && div && year && roll)){
     res.sendStatus(400)
   }
   else{
-    checkAttendeeStatus(eventName, attendeeName, roll, div, year, department)
+    checkAttendeeStatus(eventId, attendeeName, roll, div, year, department)
     .then(d => res.status(200).send(d))
     .catch(err=>res.status(500).send(err.message))
   }

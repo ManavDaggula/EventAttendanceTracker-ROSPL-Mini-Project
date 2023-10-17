@@ -6,7 +6,7 @@ const AdminOptions = () => {
   return (
     <div className="admin-main">
     <div className="admin-list">
-    <Link to="/events" className="select" >EVENTS</Link>
+    {/* <Link to="/events" className="select" >EVENTS</Link> */}
     <Link to="/verify" className="select">VERIFY</Link>
     <Link to="/view" className="select">VIEW</Link>
     </div>

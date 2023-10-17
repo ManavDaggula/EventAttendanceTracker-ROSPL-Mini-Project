@@ -1,26 +1,38 @@
 import "./admin_css/attendeedetails.css"
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const AttendeeDetails = () => {
+const AttendeeDetails = (props) => {
+  const navigate = useNavigate();
+  function validate(){
+    axios.post("http://localhost:8000/verifyAttendee",{eventName: props.attendee.event.name, code: props.attendee.code}, {withCredentials: true})
+    .then(data=>{
+      console.log(data);
+      navigate("/verify");
+    })
+    .catch(err=>{
+      console.error(err);
+    })
+  }
   return (
     <>
         <div className="attendee-details">
         <div className="details-content">
         <p className="label">Name</p>
-        <div className="label-value"><p>Bhakti</p></div>
+        <div className="label-value"><p>{props.attendee.name}</p></div>
         <p className="label">Department</p>
-        <div className="label-value"><p>IT</p></div>
+        <div className="label-value"><p>{props.attendee.department}</p></div>
     <p className="label">Year</p>
-    <div className="label-value"><p>2023</p></div>
+    <div className="label-value"><p>{props.attendee.year}</p></div>
     <p className="label">Div</p>
-    <div className="label-value"><p>A</p></div>
+    <div className="label-value"><p>{props.attendee.div}</p></div>
     <p className="label">Roll</p>
-    <div className="label-value"><p>123</p></div>
+    <div className="label-value"><p>{props.attendee.roll}</p></div>
     <p className="label">Event</p>
-    <div className="label-value"><p>abcdsf</p></div>
+    <div className="label-value"><p>{props.attendee.event.name}</p></div>
     </div>
-    <Link to="/code" className="button">Verify</Link>
+    <button className="button" onClick={validate}>Verify</button>
         
     </div>
    </>

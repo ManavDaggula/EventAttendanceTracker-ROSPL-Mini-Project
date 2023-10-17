@@ -26,6 +26,7 @@ body{
     width: 10rem;
     line-height: 2rem;
     padding: 1rem 1rem;
+    text-transform: uppercase;
 }
 
 .verify-attendee .button{

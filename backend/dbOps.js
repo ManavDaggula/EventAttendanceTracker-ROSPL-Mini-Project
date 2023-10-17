@@ -176,6 +176,9 @@ async function getAttendee(eventName, code){
       event:{
         name: eventName
       }
+    },
+    include:{
+      event: true
     }
   })
   if(!record) {
@@ -205,10 +208,10 @@ async function verifyAttendee(eventName, code){
   }
 }
 
-async function checkAttendeeStatus(eventName, attendeeName, roll, div, year, department){
+async function checkAttendeeStatus(eventId, attendeeName, roll, div, year, department){
   let status = await prisma.record.findFirst({
     where:{
-      event: await prisma.events.findUnique({where:{name:eventName}}),
+      eventsId: Number(eventId),
       name: attendeeName,
       roll: roll,
       div: div,
