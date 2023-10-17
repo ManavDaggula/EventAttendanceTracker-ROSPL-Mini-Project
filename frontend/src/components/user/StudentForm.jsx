@@ -9,7 +9,7 @@ export default function StudentForm(props){
         const [event_list, setEventList] = useState([])
         const [name,setName] = useState('')
         const [event,setEvent] = useState('')
-        const [department,setDepartment] = useState('Information Technology')
+        const [department,setDepartment] = useState('I.T.')
         const [roll,setRoll] = useState('')
         const [div,setDiv] = useState('A')
         const [year,setYear] = useState('F.E.')
@@ -51,7 +51,7 @@ export default function StudentForm(props){
             div:div,
             year:year
           }
-          // console.log(formData)
+          console.log(formData)
           axios.post("http://localhost:8000/newAttendee",formData)
           .then((code)=>{
             console.log(code.data)
@@ -76,7 +76,7 @@ export default function StudentForm(props){
             <label htmlFor="name">Name</label>
             <input type="text" name='name' onChange={(e)=>{setName(e.target.value)}}/>
             <label htmlFor="department">Department</label>
-        <select name="department" onChange={(e)=>{setDepartment(e.target.value)}}>
+        <select name="department" onChange={(e)=>{setDepartment(e.target.value)}} defaultValue={"I.T."}>
           <option value="I.T.">Information Technology.</option>
           <option value="C.S.">Computer Science</option>
           <option value="Mech.">Mechanical Engineering</option>

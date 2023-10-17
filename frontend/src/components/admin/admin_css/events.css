@@ -1,0 +1,18 @@
+h1{
+    text-align: center;
+}
+.event-data , .event-form{
+    display: grid;
+    gap: 1em;
+    margin:1em;
+    place-content: center;
+}
+.eventCard , .event-form{
+    padding: 1em;
+    background-color: rgba(50, 118, 181, 0.5);
+    text-align: center;
+    border-radius: 0.4em;
+    display: grid;
+    gap: 1em;
+    font-size: 1.2em;
+}

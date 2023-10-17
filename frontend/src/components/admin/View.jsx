@@ -2,7 +2,7 @@ import "./admin_css/view.css"
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
 function View() {
-    const [event, setEvent] = useState('');
+    const [event, setEvent] = useState('none');
     const [eventList, setEventList] = useState([])
     const [attendeeList, setAttendeeList] = useState([])
 
@@ -13,7 +13,9 @@ function View() {
             console.log(data.data);
             setEventList(data.data);
           })
-          .catch((e) => console.error(e.message));
+          .catch((e) => {
+            console.error(e.message)
+          });
     
         // console.log("rendered");
       }, []);

@@ -30,7 +30,7 @@ function App() {
         <Route path="/view" element={isAdmin ? <View /> : <Navigate to={"/"}/> } />
         <Route path="/verify" element={isAdmin ? <Verify setAttendee={d=>{setAttendeeDetails(d)}}/> : <Navigate to={"/"}/> } />
         <Route path="/attendee-details" element={isAdmin ? <AttendeeDetails attendee={attendeeDetails}/> : <Navigate to={"/"}/> } />
-        {/* <Route path="/events" element={isAdmin ? <Events /> : <Navigate to={"/"}/> } /> */}
+        <Route path="/events" element={isAdmin ? <Events /> : <Navigate to={"/"}/> } />
         <Route path="/login" element={<AdminLogin setAdmin={()=>setIsAdmin(true)}/>} />
         {/* <Route path="/admin" element={<AdminOptions/>} /> */}
         {/* <Route path="/view" element={<View/>} /> */}

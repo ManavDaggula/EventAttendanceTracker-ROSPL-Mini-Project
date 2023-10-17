@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 app.post("/login", (req, res) => {
   let uname = req.body.username;
   let pwd = req.body.password;
-  console.log(uname,pwd);
+  // console.log(uname,pwd);
   adminExists(uname)
     .then((x) => {
       bcrypt.compare(req.body.password, x, (err, result) => {
@@ -62,8 +62,11 @@ app.get("/logout", (req, res)=>{
 app.get("/listEvents", verifyRequest, (req, res) => {
   // console.log("here")
   listEvents().then(data=>{
-    console.log(data);
+    // console.log(data);
     res.status(200).send(data);
+  })
+  .catch((err)=>{
+    res.sendStatus(500)
   })
 });
 
@@ -71,14 +74,22 @@ app.get("/listRunningEvents", (req,res)=>{
     listRunningEvents().then(data=>{
         res.status(200).json(data);
     })
+    .catch((err)=>{
+      res.sendStatus(500)
+    })
 })
 
 app.get("/startEvent",verifyRequest, (req,res)=>{
   const eventName = req.query.event;
-  if(!eventName){res.status(400).send("Event must be specified.")}
-  startEvent(eventName)
+  if(eventName){
+    startEvent(eventName)
   .then(data=>res.sendStatus(200))
   .catch(err=>res.status(500).send(err))
+  }
+  else{
+    res.status(400).send("Event must be specified.")
+  }
+  
 })
 
 app.get("/stopEvent",verifyRequest, (req,res)=>{
@@ -94,7 +105,7 @@ app.post("/addEvent", verifyRequest, (req,res)=>{
   const eventTime = req.body.eventTime;
   if(eventName && eventTime){
     addEvents(eventName, eventTime)
-    .then(event =>{res.sendStatus(200)})
+    .then(event =>{res.status(200).json(event)})
     .catch(err => res.status(500).send(err.message))
   }
   else{
@@ -117,7 +128,7 @@ app.post("/newAttendee", (req,res)=>{
   const event = req.body.event;
   const roll = req.body.roll;
   const year = req.body.year;
-  const department = req.body.name;
+  const department = req.body.department;
   const div = req.body.div;
   if(name && event && roll && year && department && div){
     newAttendee(name, roll, department, year, div, event)
