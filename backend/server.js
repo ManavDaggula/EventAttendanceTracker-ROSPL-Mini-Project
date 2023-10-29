@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("Express working");
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   let uname = req.body.username;
   let pwd = req.body.password;
   // console.log(uname,pwd);
@@ -61,11 +61,11 @@ app.post("/login", (req, res) => {
     .catch((x) => res.status(401).send("User does not exist."));
 });
 
-app.get("/logout", (req, res)=>{
+app.get("/api/logout", (req, res)=>{
   res.clearCookie("token").sendStatus(200)
 })
 
-app.get("/listEvents", verifyRequest, (req, res) => {
+app.get("/api/listEvents", verifyRequest, (req, res) => {
   // console.log("here")
   listEvents().then(data=>{
     // console.log(data);
@@ -76,7 +76,7 @@ app.get("/listEvents", verifyRequest, (req, res) => {
   })
 });
 
-app.get("/listRunningEvents", (req,res)=>{
+app.get("/api/listRunningEvents", (req,res)=>{
     listRunningEvents().then(data=>{
         res.status(200).json(data);
     })
@@ -85,7 +85,7 @@ app.get("/listRunningEvents", (req,res)=>{
     })
 })
 
-app.get("/startEvent",verifyRequest, (req,res)=>{
+app.get("/api/startEvent",verifyRequest, (req,res)=>{
   const eventName = req.query.event;
   if(eventName){
     startEvent(eventName)
@@ -98,7 +98,7 @@ app.get("/startEvent",verifyRequest, (req,res)=>{
   
 })
 
-app.get("/stopEvent",verifyRequest, (req,res)=>{
+app.get("/api/stopEvent",verifyRequest, (req,res)=>{
   const eventName = req.query.event;
   if(!eventName){res.status(400).send("Event must be specified.")}
   endEvent(eventName)
@@ -106,7 +106,7 @@ app.get("/stopEvent",verifyRequest, (req,res)=>{
   .catch(err=>res.status(500).send(err))
 })
 
-app.post("/addEvent", verifyRequest, (req,res)=>{
+app.post("/api/addEvent", verifyRequest, (req,res)=>{
   const eventName = req.body.eventName;
   const eventTime = req.body.eventTime;
   if(eventName && eventTime){
@@ -119,7 +119,7 @@ app.post("/addEvent", verifyRequest, (req,res)=>{
   }
 })
 
-app.get("/listAttendees",verifyRequest, (req,res)=>{
+app.get("/api/listAttendees",verifyRequest, (req,res)=>{
   const event = req.query.event;
   if(!event){
     res.status(400).send("Invalid request. Specify event.");
@@ -129,7 +129,7 @@ app.get("/listAttendees",verifyRequest, (req,res)=>{
   .catch(err=>res.status(500).send(err.message))
 })
 
-app.post("/newAttendee", (req,res)=>{
+app.post("/api/newAttendee", (req,res)=>{
   const name = req.body.name;
   const event = req.body.event;
   const roll = req.body.roll;
@@ -147,7 +147,7 @@ app.post("/newAttendee", (req,res)=>{
   }
 })
 
-app.get("/getAttendee", verifyRequest, (req, res)=>{
+app.get("/api/getAttendee", verifyRequest, (req, res)=>{
   const eventName = req.query.eventName;
   const code = req.query.code;
   if(eventName && code){
@@ -164,7 +164,7 @@ app.get("/getAttendee", verifyRequest, (req, res)=>{
   }
 })
 
-app.post("/verifyAttendee", verifyRequest, (req,res)=>{
+app.post("/api/verifyAttendee", verifyRequest, (req,res)=>{
   const eventName = req.body.eventName;
   const code = req.body.code;
   if(eventName && code){
@@ -181,7 +181,7 @@ app.post("/verifyAttendee", verifyRequest, (req,res)=>{
   }
 })
 
-app.get("/checkStatus",(req,res)=>{
+app.get("/api/checkStatus",(req,res)=>{
   const eventId = req.query.eventId;
   // const code = req.query.code;
   const attendeeName = req.query.attendeeName;

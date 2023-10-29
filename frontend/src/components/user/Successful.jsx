@@ -5,7 +5,7 @@ import Background from './Background.jsx'
 function SuccessPage() {
   return (
     <>
-    <Background />
+    {/* <Background /> */}
     <p className="card">Your attendance is successfully recorded</p>
     </>
   )

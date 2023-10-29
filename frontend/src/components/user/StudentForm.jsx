@@ -23,7 +23,7 @@ export default function StudentForm(props){
       
       
         useEffect(()=>{
-          axios.get("/listRunningEvents")
+          axios.get("http://localhost:8000/api/listRunningEvents")
           .then(data=>{
             console.log(data.data)
             setEventList(data.data)
@@ -42,6 +42,11 @@ export default function StudentForm(props){
             window.alert("Roll can only have digits");
             return;
           }
+
+          if(JSON.parse(localStorage.getItem('eventList')).includes(event)){
+            window.alert("Already registered for this event.")
+            return;
+          }
           
           let formData = {
             name:name,
@@ -52,9 +57,15 @@ export default function StudentForm(props){
             year:year
           }
           console.log(formData)
-          axios.post("/newAttendee",formData)
+          axios.post("http://localhost:8000/api/newAttendee",formData)
           .then((code)=>{
             console.log(code.data)
+            
+            //adding event to list of registered event
+            let prevEventList = JSON.parse(window.localStorage.getItem('eventList'))
+            prevEventList.push(event)
+            window.localStorage.setItem('eventList',JSON.stringify(prevEventList))
+
             // code = code.data
             props.shareDetails(code.data)
             props.showCode(code.data.code);
