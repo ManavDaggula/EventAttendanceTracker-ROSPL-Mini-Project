@@ -2,20 +2,21 @@ import { useEffect } from "react"
 import "./user_css/codegenerate.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import codeImage from "./../../assets/codeg.jpg"
 export default function CodeGeneration(props){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        let url = new URL("http://localhost:8000/checkStatus")
-        url.searchParams.append("attendeeName",props.attendee.name)
-        url.searchParams.append("eventId",props.attendee.eventsId)
-        url.searchParams.append("department",props.attendee.department)
-        url.searchParams.append("div",props.attendee.div)
-        url.searchParams.append("year",props.attendee.year)
-        url.searchParams.append("roll",props.attendee.roll)
+        // let url = new URL("/checkStatus")
+        // url.searchParams.append("attendeeName",props.attendee.name)
+        // url.searchParams.append("eventId",props.attendee.eventsId)
+        // url.searchParams.append("department",props.attendee.department)
+        // url.searchParams.append("div",props.attendee.div)
+        // url.searchParams.append("year",props.attendee.year)
+        // url.searchParams.append("roll",props.attendee.roll)
         let checker = setInterval(()=>{
             console.log("checking...")
-            axios.get(url)
+            axios.get(`/checkStatus?attendeeName=${props.attendee.name}&eventId=${props.attendee.eventsId}&department=${props.attendee.department}&div=${props.attendee.div}&year=${props.attendee.year}&roll=${props.attendee.roll}`)
             .then(data=>{
                 console.log(data)
                 if(data.data){
@@ -37,7 +38,7 @@ export default function CodeGeneration(props){
     return(
         <div className="code-div">
         <div className="code-image">
-            <img src="/src/assets/codeg.jpg"/>
+            <img src={codeImage}/>
             </div>
         <div className="code-content">
             <h4>YOUR CODE</h4>

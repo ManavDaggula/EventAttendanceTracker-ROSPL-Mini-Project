@@ -1,9 +1,10 @@
 import axios from "axios";
 import "./user_css/navbar.css"
 import { Link } from "react-router-dom";
+import logo from "./../../assets/logo.png"
 export default function Navbar(props){
     function logOut(){
-        axios.get("http://localhost:8000/logOut",{withCredentials: true})
+        axios.get("/logOut",{withCredentials: true})
         .then((data)=>{
             props.logOut()
         })
@@ -13,7 +14,7 @@ export default function Navbar(props){
     }
     return(
         <div className="navbar">
-        <img src="/src/assets/logo.png" alt="logo"/>
+        <img src={logo} alt="logo"/>
         <div className="nav-opt">
             <ul className="nav-list">
                 <li className="list-item"><Link to="/">Home</Link></li>

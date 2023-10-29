@@ -8,7 +8,7 @@ function View() {
 
     useEffect(() => {
         axios
-          .get("http://localhost:8000/listEvents", {withCredentials: true})
+          .get("/listEvents", {withCredentials: true})
           .then((data) => {
             console.log(data.data);
             setEventList(data.data);
@@ -23,7 +23,7 @@ function View() {
       useEffect(()=>{
         // console.log(event)
         if(event!="none"){
-          axios.get("http://localhost:8000/listAttendees?event="+event, {withCredentials: true})
+          axios.get("/listAttendees?event="+event, {withCredentials: true})
           .then((data)=>{
             console.log(data)
             setAttendeeList(data.data);

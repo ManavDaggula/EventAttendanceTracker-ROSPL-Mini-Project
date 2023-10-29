@@ -6,7 +6,7 @@ import axios from "axios";
 const AttendeeDetails = (props) => {
   const navigate = useNavigate();
   function validate(){
-    axios.post("http://localhost:8000/verifyAttendee",{eventName: props.attendee.event.name, code: props.attendee.code}, {withCredentials: true})
+    axios.post("/verifyAttendee",{eventName: props.attendee.event.name, code: props.attendee.code}, {withCredentials: true})
     .then(data=>{
       console.log(data);
       navigate("/verify");

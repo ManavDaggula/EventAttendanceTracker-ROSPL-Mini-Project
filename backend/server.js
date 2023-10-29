@@ -5,10 +5,16 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import { addEvents, adminExists, checkAttendeeStatus, endEvent, getAttendee, listEvents, listRegisteredAttendee, listRunningEvents, newAttendee, startEvent, verifyAttendee } from "./dbOps.js";
 
 dotenv.config();
 const app = e();
+app.use(e.static('dist'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // app.use(e.json())
@@ -192,6 +198,10 @@ app.get("/checkStatus",(req,res)=>{
     .catch(err=>res.status(500).send(err.message))
   }
 })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+  });
 
 app.listen(8000, () => {
   console.log("listening....");

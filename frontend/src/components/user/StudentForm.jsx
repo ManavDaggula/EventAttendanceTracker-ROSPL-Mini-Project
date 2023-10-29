@@ -23,7 +23,7 @@ export default function StudentForm(props){
       
       
         useEffect(()=>{
-          axios.get("http://localhost:8000/listRunningEvents")
+          axios.get("/listRunningEvents")
           .then(data=>{
             console.log(data.data)
             setEventList(data.data)
@@ -52,7 +52,7 @@ export default function StudentForm(props){
             year:year
           }
           console.log(formData)
-          axios.post("http://localhost:8000/newAttendee",formData)
+          axios.post("/newAttendee",formData)
           .then((code)=>{
             console.log(code.data)
             // code = code.data
