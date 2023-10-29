@@ -10,7 +10,7 @@ const AdminLogin = (props) => {
 
   function login(){
     if(uname && password && uname!=="" && password!==""){
-      axios.post("http://localhost:8000/api/login",{username:uname, password:password},{withCredentials: true})
+      axios.post("/api/login",{username:uname, password:password},{withCredentials: true})
       .then(data=>{
         console.log(data);
         props.setAdmin();

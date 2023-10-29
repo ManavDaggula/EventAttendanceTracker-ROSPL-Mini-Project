@@ -32,7 +32,7 @@ const Verify = (props) => {
 
   function getAttendee() {
     if (validate()) {
-      axios.get(`http://localhost:8000/api/getAttendee?eventName=${event}&code=${code.toUpperCase()}`,{withCredentials:true})
+      axios.get(`/api/getAttendee?eventName=${event}&code=${code.toUpperCase()}`,{withCredentials:true})
       .then(data=>{
         console.log(data)
         props.setAttendee(data.data)
@@ -48,7 +48,7 @@ const Verify = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/listRunningEvents")
+      .get("/api/listRunningEvents")
       .then((data) => {
         console.log(data.data);
         setEventList(data.data);

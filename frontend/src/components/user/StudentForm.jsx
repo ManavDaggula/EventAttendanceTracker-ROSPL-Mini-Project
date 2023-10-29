@@ -23,7 +23,7 @@ export default function StudentForm(props){
       
       
         useEffect(()=>{
-          axios.get("http://localhost:8000/api/listRunningEvents")
+          axios.get("/api/listRunningEvents")
           .then(data=>{
             console.log(data.data)
             setEventList(data.data)
@@ -57,7 +57,7 @@ export default function StudentForm(props){
             year:year
           }
           console.log(formData)
-          axios.post("http://localhost:8000/api/newAttendee",formData)
+          axios.post("/api/newAttendee",formData)
           .then((code)=>{
             console.log(code.data)
             

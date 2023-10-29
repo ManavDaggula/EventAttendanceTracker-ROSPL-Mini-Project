@@ -16,7 +16,7 @@ export default function CodeGeneration(props){
         // url.searchParams.append("roll",props.attendee.roll)
         let checker = setInterval(()=>{
             console.log("checking...")
-            axios.get(`http://localhost:8000/api/checkStatus?attendeeName=${props.attendee.name}&eventId=${props.attendee.eventsId}&department=${props.attendee.department}&div=${props.attendee.div}&year=${props.attendee.year}&roll=${props.attendee.roll}`)
+            axios.get(`/api/checkStatus?attendeeName=${props.attendee.name}&eventId=${props.attendee.eventsId}&department=${props.attendee.department}&div=${props.attendee.div}&year=${props.attendee.year}&roll=${props.attendee.roll}`)
             .then(data=>{
                 console.log(data)
                 if(data.data){

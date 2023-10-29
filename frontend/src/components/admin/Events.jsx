@@ -8,7 +8,7 @@ const Events = () => {
 
   function addEvent(){
     if(newEvent.current.value.trim() && newEvent.current.value.trim()!==""){
-      axios.post("http://localhost:8000/api/addEvent",{eventName:newEvent.current.value, eventTime: new Date()},{withCredentials: true})
+      axios.post("/api/addEvent",{eventName:newEvent.current.value, eventTime: new Date()},{withCredentials: true})
       .then((data)=>{
         setEventList(prev=>[...prev, data.data])
       })
@@ -20,7 +20,7 @@ const Events = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/listEvents", {withCredentials: true})
+      .get("/api/listEvents", {withCredentials: true})
       .then((data) => {
         console.log(data.data);
         setEventList(data.data);
@@ -50,13 +50,13 @@ function Event(props) {
   const [isRunning, setIsRunning] = useState(props.event.endTime ? false : true);
 
   function stopEvent(){
-    axios.get(`http://localhost:8000/api/stopEvent?event=${props.event.name}`,{withCredentials: true})
+    axios.get(`/api/stopEvent?event=${props.event.name}`,{withCredentials: true})
     .then(data=>{setIsRunning(false)})
     .catch(err=>{console.error(err.message)})
   }
 
   function startEvent(){
-    axios.get(`http://localhost:8000/api/startEvent?event=${props.event.name}`,{withCredentials: true})
+    axios.get(`/api/startEvent?event=${props.event.name}`,{withCredentials: true})
     .then(data=>{setIsRunning(true)})
     .catch(err=>{console.error(err.message)})
   }

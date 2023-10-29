@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "./../../assets/logo.png"
 export default function Navbar(props){
     function logOut(){
-        axios.get("http://localhost:8000/api/logOut",{withCredentials: true})
+        axios.get("/api/logOut",{withCredentials: true})
         .then((data)=>{
             props.logOut()
         })

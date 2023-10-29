@@ -8,7 +8,7 @@ const AttendeeDetails = (props) => {
   function validate() {
     axios
       .post(
-        "http://localhost:8000/api/verifyAttendee",
+        "/api/verifyAttendee",
         { eventName: props.attendee.event.name, code: props.attendee.code },
         { withCredentials: true }
       )
